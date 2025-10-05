@@ -9,7 +9,8 @@ namespace FileParserService.Services;
 
 internal sealed class ProcessorService(
     ILogger<ProcessorService> logger,
-    IOptions<AppSettings> settings
+    IOptions<AppSettings> settings,
+    IRabbitMqPublisher publisher
 ) : IProcessorService
 {
     private static readonly JsonSerializerOptions _jsonOptions = new()
@@ -19,6 +20,7 @@ internal sealed class ProcessorService(
     };
     private readonly ILogger<ProcessorService> _logger = logger;
     private readonly AppSettings _settings = settings.Value;
+    private readonly IRabbitMqPublisher _publisher = publisher;
     private readonly string[] _possibleStates = ["Online", "Run", "NotReady", "Offline"];
 
     public async Task ProcessFileAsync(string inputFilePath)
@@ -36,7 +38,8 @@ internal sealed class ProcessorService(
 
             var fileId = Guid.NewGuid().ToString();
 
-            await SerializeToJsonAsync(instrumentStatus, fileName, fileId);
+            string jsonString = JsonSerializer.Serialize(instrumentStatus, _jsonOptions);
+            await _publisher.SendMessage(jsonString);
 
             MoveFileToProcessed(inputFilePath, fileName, fileId);
         }
@@ -112,17 +115,6 @@ internal sealed class ProcessorService(
                 device.ParsedStatus.ModuleState = _possibleStates[randomIndex];
             }
         }
-    }
-
-    private async Task SerializeToJsonAsync(InstrumentStatus status, string fileName, string fileId)
-    {
-        var path = Path.Combine(
-            _settings.OutputDirectory,
-            $"{Path.GetFileNameWithoutExtension(fileName)}_{fileId}.json"
-        );
-        var jsonString = JsonSerializer.Serialize(status, _jsonOptions);
-        await File.WriteAllTextAsync(path, jsonString);
-        _logger.LogInformation("Результат успешно сохранен в {JsonPath}", path);
     }
 
     private void MoveFileToProcessed(string originalPath, string fileName, string fileId)
