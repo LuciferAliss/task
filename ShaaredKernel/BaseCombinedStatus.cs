@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace FileParserService.Models;
+namespace SharedKernel;
 
 [JsonDerivedType(typeof(CombinedSamplerStatus), typeDiscriminator: "sampler")]
 [JsonDerivedType(typeof(CombinedPumpStatus), typeDiscriminator: "pump")]

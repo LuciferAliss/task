@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace FileParserService.Models;
+namespace SharedKernel;
 
 [XmlRoot("CombinedOvenStatus")]
 public class CombinedOvenStatus : BaseCombinedStatus

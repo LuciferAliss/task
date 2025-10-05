@@ -29,4 +29,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShaaredKernel\SharedKernel.csproj" />
+  </ItemGroup>
+
 </Project>

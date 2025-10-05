@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
-namespace FileParserService.Models;
+namespace SharedKernel;
 
 public class DeviceStatus
 {

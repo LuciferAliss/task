@@ -50,6 +50,5 @@ internal sealed class AppHost(
     {
         Directory.CreateDirectory(_settings.InputDirectory);
         Directory.CreateDirectory(_settings.ProcessedDirectory);
-        Directory.CreateDirectory(_settings.OutputDirectory);
     }
 }

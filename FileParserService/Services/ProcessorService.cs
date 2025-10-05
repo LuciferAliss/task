@@ -2,6 +2,7 @@ using FileParserService.Models;
 using FileParserService.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SharedKernel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

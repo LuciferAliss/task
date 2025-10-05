@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace FileParserService.Models;
+namespace SharedKernel;
 
 [XmlRoot("CombinedPumpStatus")]
 public class CombinedPumpStatus : BaseCombinedStatus
