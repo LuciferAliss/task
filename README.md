@@ -13,13 +13,13 @@
 Проект содержит файл `docker-compose.yml` с уже настроенным сервисом RabbitMQ.
 
 1.  **Клонируйте репозиторий**:
-   ```bash
+```bash
     git clone https://github.com/LuciferAliss/task.git 
     cd task
 ```
 
 2.  **Запустите RabbitMQ**: Находясь в корневой папке проекта, выполните команду:
-   ```bash
+```bash
     docker-compose up -d
  ```
 
