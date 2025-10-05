@@ -10,7 +10,7 @@ public class SqliteStorageService(AppDbContext dbContext, ILogger<SqliteStorageS
     private readonly ILogger<SqliteStorageService> _logger = logger;
     private readonly AppDbContext _dbContext = dbContext;
 
-    public async Task SaveDeviceStatusAsync(DeviceStatus deviceStatus)
+    public async Task SaveAsync(DeviceStatus deviceStatus)
     {
         if (deviceStatus.ParsedStatus == null)
         {
@@ -18,20 +18,26 @@ public class SqliteStorageService(AppDbContext dbContext, ILogger<SqliteStorageS
             return;
         }
 
-        _logger.LogInformation("Сохранение статуса для модуля: {ModuleId}", deviceStatus.ModuleCategoryID);
         try
         {
             var newState = DeviceStateEntity.Create(
                 deviceStatus.ModuleCategoryID,
                 deviceStatus.ParsedStatus.ModuleState);
 
-            await _dbContext.DeviceStates.AddAsync(newState);
-
-            await _dbContext.SaveChangesAsync();
+            await AddDeviceStateAsync(newState);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при сохранении статуса для модуля {ModuleId} в БД.", deviceStatus.ModuleCategoryID);
         }
+    }
+
+    private async Task AddDeviceStateAsync(DeviceStateEntity deviceStatus)
+    {
+        _logger.LogInformation("Сохранение статуса для модуля: {ModuleId}", deviceStatus.ModuleCategoryID);
+
+        await _dbContext.DeviceStates.AddAsync(deviceStatus);
+        
+        await _dbContext.SaveChangesAsync();
     }
 }

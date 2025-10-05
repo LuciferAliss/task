@@ -82,7 +82,7 @@ public class RabbitMqListener(
                 
                 foreach (var device in status.DeviceStatuses)
                 {
-                    await storageService.SaveDeviceStatusAsync(device);
+                    await storageService.SaveAsync(device);
                 }
             }
             
